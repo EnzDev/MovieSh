@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="fr.enzomallard.moviesh.MainPage"
+    tools:showIn="@layout/activity_main_page">
+
+
+    <GridView
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+
+        android:id="@+id/movie_grid_popular"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:columnWidth="102dp"
+        android:nestedScrollingEnabled="true"
+
+        android:gravity="center_vertical|center_horizontal|center"
+        android:horizontalSpacing="0dp"
+        android:verticalSpacing="10dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="spacingWidthUniform"
+
+        tools:listitem="@layout/movie_item" />
+</android.support.v4.widget.NestedScrollView>
+

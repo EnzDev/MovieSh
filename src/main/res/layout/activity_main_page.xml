@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="fr.enzomallard.moviesh.SearchPage">
+    tools:context="fr.enzomallard.moviesh.MainPage">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -32,7 +32,7 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_search_page" />
+    <include layout="@layout/content_main_page" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

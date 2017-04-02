@@ -1,10 +1,13 @@
 package fr.enzomallard.moviesh.movie;
 
 import android.database.DataSetObserver;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ImageView;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -12,65 +15,75 @@ import java.util.LinkedList;
  * Created by Enzo on 29/03/2017.
  */
 
-public class Movie implements Adapter {
+public class Movie  {
     String title;
     String overview;
-    Date   releaseDate;
+    Calendar releaseDate;
     double note; // Over 10
+
+    ImageView poster;
 
     LinkedList<Integer> genres; // int identifiers
 
-    @Override
-    public void registerDataSetObserver(DataSetObserver observer) {
-
-    }
-
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
-
-    }
-
-    @Override
-    public int getCount() {
-        return 0;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return 0;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 0;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
     // see : https://api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=fr-FR
 
+
+    public Movie(String title, String overview, Calendar releaseDate, double note, ImageView poster, LinkedList<Integer> genres) {
+        this.title = title;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+        this.note = note;
+        this.poster = poster;
+        this.genres = genres;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public Calendar getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Calendar releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public double getNote() {
+        return note;
+    }
+
+    public void setNote(double note) {
+        this.note = note;
+    }
+
+    public ImageView getPoster() {
+        return poster;
+    }
+
+    public void setPoster(ImageView poster) {
+        this.poster = poster;
+    }
+
+    public LinkedList<Integer> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(LinkedList<Integer> genres) {
+        this.genres = genres;
+    }
 }
 
 /*

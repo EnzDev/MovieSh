@@ -2,22 +2,28 @@ package fr.enzomallard.moviesh;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.*;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import fr.enzomallard.moviesh.adapter.MovieAdapter;
 import fr.enzomallard.moviesh.listener.onChangeCTL;
+import fr.enzomallard.moviesh.movie.Movie;
 
-public class SearchPage extends AppCompatActivity {
+public class MainPage extends AppCompatActivity {
+    static boolean HAS_FIRST_LOAD = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_page);
+        setContentView(R.layout.activity_main_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -29,12 +35,30 @@ public class SearchPage extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        MovieAdapter movieadapter = new MovieAdapter(this, R.layout.movie_item, new ArrayList<Movie>());
+        ((GridView)findViewById(R.id.movie_grid_popular)).setAdapter(movieadapter);
+
+        movieadapter.clear();
+        if(HAS_FIRST_LOAD) {
+            movieadapter.addAll(moviedb.Populars);
+        } else {
+            movieadapter.addAll(moviedb.getNextPopulars(this, movieadapter));
+            HAS_FIRST_LOAD = true;
+        }
+
+        ((GridView)findViewById(R.id.movie_grid_popular)).setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) { /* Will be replaced with an intent switch */
+                Toast.makeText(MainPage.this, ((Movie)parent.getItemAtPosition(position)).getTitle(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search_page, menu);
+        getMenuInflater().inflate(R.menu.menu_main_page, menu);
 
         AppBarLayout appbar = (AppBarLayout) findViewById(R.id.app_bar);
 
