@@ -9,11 +9,19 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_refresh_popular"
+        android:icon="@drawable/refresh_24dp"
+        android:tint="@android:color/white"
+        android:orderInCategory="103"
+        android:visible="true"
+        android:title="@string/action_refresh"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search_black_24dp"
-        android:orderInCategory="103"
+        android:orderInCategory="104"
         android:tint="@android:color/white"
         android:title="@string/action_search"
         android:visible="false"

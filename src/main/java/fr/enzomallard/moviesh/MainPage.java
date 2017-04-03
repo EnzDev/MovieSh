@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
@@ -19,7 +20,7 @@ import fr.enzomallard.moviesh.movie.Movie;
 
 public class MainPage extends AppCompatActivity {
     static boolean HAS_FIRST_LOAD = false;
-
+    MovieAdapter movieadapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,15 +37,15 @@ public class MainPage extends AppCompatActivity {
             }
         });
 
-        MovieAdapter movieadapter = new MovieAdapter(this, R.layout.movie_item, new ArrayList<Movie>());
+        movieadapter = new MovieAdapter(this, R.layout.movie_item, new ArrayList<Movie>());
         ((GridView)findViewById(R.id.movie_grid_popular)).setAdapter(movieadapter);
 
         movieadapter.clear();
         if(HAS_FIRST_LOAD) {
             movieadapter.addAll(moviedb.Populars);
         } else {
-            movieadapter.addAll(moviedb.getNextPopulars(this, movieadapter));
             HAS_FIRST_LOAD = true;
+            movieadapter.addAll(moviedb.getNextPopulars(this, movieadapter));
         }
 
         ((GridView)findViewById(R.id.movie_grid_popular)).setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -53,6 +54,16 @@ public class MainPage extends AppCompatActivity {
                 Toast.makeText(MainPage.this, ((Movie)parent.getItemAtPosition(position)).getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        SwipeRefreshLayout refreshLayout = ((SwipeRefreshLayout)findViewById(R.id.refresh_popular));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                moviedb.refreshPopulars(MainPage.this, movieadapter, ((SwipeRefreshLayout)findViewById(R.id.refresh_popular)));
+            }
+        });
+
     }
 
     @Override
@@ -82,8 +93,11 @@ public class MainPage extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+//        Toast.makeText(MainPage.this, getResources().getResourceEntryName(id) , Toast.LENGTH_SHORT).show();
         //noinspection SimplifiableIfStatement
+        if (id == R.id.action_refresh_popular)
+            moviedb.refreshPopulars(MainPage.this, movieadapter, ((SwipeRefreshLayout)findViewById(R.id.refresh_popular)));
+
         if (id == R.id.action_settings) {
             return true;
         }

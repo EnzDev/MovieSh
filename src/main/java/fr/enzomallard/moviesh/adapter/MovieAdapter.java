@@ -36,9 +36,9 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
     }
 
     static class ViewHolder {
-        public ImageView poster;
-        public TextView title;
-        public TextView dateY;
+        ImageView poster;
+        TextView title;
+        TextView dateY;
     }
 
     @Override

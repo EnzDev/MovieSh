@@ -1,6 +1,8 @@
 package fr.enzomallard.moviesh;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.ImageView;
 
 import com.android.volley.Request;
@@ -33,8 +35,10 @@ import fr.enzomallard.moviesh.movie.Movie;
 public class moviedb {
     private static String MOVIEDB_API_KEY = "0e53faa4f7fc728716545dfe7ab1e1fb";
     public  static List<Movie> Populars = new ArrayList<>();
-    private static  String POSTER_SIZE = "w154";
-    private static  int LOADED_POP_PAGES = 0;
+    private static String POSTER_SIZE = "w154";
+    private static int LOADED_POP_PAGES = 0;
+    public  static int updateCounterPop = 0;
+    public  static int objectiveCounterPop = 0;
 
 
     public static List<Movie> getNextPopulars(Context context, MovieAdapter movieadapter) { /* French by default */
@@ -42,7 +46,7 @@ public class moviedb {
         return getNextPopulars(LOADED_POP_PAGES,"fr-FR", context, movieadapter);
     }
 
-    public static List<Movie> getNextPopulars(int page,String lang, final Context context, final MovieAdapter movieadapter){ /* Context will often be this when called */
+    public static List<Movie> getNextPopulars(int page,String lang, final Context context, final MovieAdapter movieadapter){ /* Context will often be "this" when called */
 
         String url = "https://api.themoviedb.org/3/movie/popular?api_key=" + MOVIEDB_API_KEY +
                 "&language=" + lang +
@@ -67,10 +71,14 @@ public class moviedb {
                                         .error(R.drawable.stat_notify_error)
                                         .into(iv, new com.squareup.picasso.Callback() {
                                             @Override
-                                            public void onSuccess() { movieadapter.notifyDataSetChanged(Populars);}
+                                            public void onSuccess() {
+                                                updateCounterPop++;
+                                                movieadapter.notifyDataSetChanged(Populars);
+                                            }
 
                                             @Override
                                             public void onError(){/* Just handled with the .error but we need to notify so we do the same thing as success*/
+                                                updateCounterPop++;
                                                 movieadapter.notifyDataSetChanged(Populars);
                                             }
                                         });
@@ -100,11 +108,29 @@ public class moviedb {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        if(Populars.size() == 0) MainPage.HAS_FIRST_LOAD = false;
                         System.out.println("Mmm...");
                     }
                 });
 
         Requester.getInstance(context).addToRequestQueue(jsObjRequest);
+
+        return Populars;
+    }
+
+    public static List<Movie> refreshPopulars(Context context, MovieAdapter movieadapter, SwipeRefreshLayout refreshLayout){
+        int torefresh = LOADED_POP_PAGES;
+        updateCounterPop = 0;
+        objectiveCounterPop = 20*torefresh;
+
+        Populars.clear();
+
+        movieadapter.notifyDataSetChanged(Populars);
+
+        (new Thread( new Refresher(refreshLayout, context) )).start();
+
+        for (LOADED_POP_PAGES = 0; LOADED_POP_PAGES < torefresh; LOADED_POP_PAGES++)
+            getNextPopulars(LOADED_POP_PAGES+1,"fr-FR", context, movieadapter);
 
         return Populars;
     }
