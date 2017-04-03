@@ -1,7 +1,6 @@
 package fr.enzomallard.moviesh.adapter;
 
 import android.app.Activity;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,6 @@ import java.util.List;
 import fr.enzomallard.moviesh.R;
 import fr.enzomallard.moviesh.movie.Movie;
 
-/**
- * TODO: document your custom view class.
- */
 public class MovieAdapter extends ArrayAdapter<Movie> {
 
     private Activity context;
@@ -35,7 +31,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         return position;
     }
 
-    static class ViewHolder {
+    private static class ViewHolder {
         ImageView poster;
         TextView title;
         TextView dateY;

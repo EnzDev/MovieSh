@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fr.enzomallard.moviesh.View_Movie">
+
+    <ImageView
+        android:id="@+id/the_movie_Lposter"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
+        app:srcCompat="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/the_movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hahaha"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/the_movie_Lposter"
+        android:layout_marginStart="12dp" />
+
+    <TextView
+        android:id="@+id/the_movie_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hahaha"
+        android:layout_below="@+id/the_movie_title"
+        android:layout_alignStart="@+id/the_movie_title" />
+
+    <RatingBar
+        android:id="@+id/the_movie_rating"
+        style="@android:style/Widget.Material.Light.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:numStars="5"
+        android:rating="4.5"
+        android:layout_below="@+id/the_movie_date"
+        android:layout_alignStart="@+id/the_movie_date" />
+
+    <TextView
+        android:id="@+id/the_movie_overview"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="true"
+        android:gravity="fill_horizontal"
+        android:isScrollContainer="true"
+        android:paddingBottom="25sp"
+        android:scrollHorizontally="false"
+        android:scrollbars="vertical"
+        android:text="hahaha"
+        android:layout_alignStart="@+id/the_movie_title"
+        android:layout_below="@+id/the_movie_rating" />
+
+    <TextView
+        android:id="@+id/the_movie_genres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignStart="@+id/the_movie_overview"
+        android:layout_below="@+id/the_movie_overview"
+        android:layout_marginTop="-25sp"
+        android:text="hahaha" />
+</RelativeLayout>

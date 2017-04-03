@@ -1,24 +1,24 @@
 package fr.enzomallard.moviesh;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import fr.enzomallard.moviesh.adapter.MovieAdapter;
 import fr.enzomallard.moviesh.listener.onChangeCTL;
+
 import fr.enzomallard.moviesh.movie.Movie;
 
-public class MainPage extends AppCompatActivity {
+public class View_MainPage extends AppCompatActivity {
     static boolean HAS_FIRST_LOAD = false;
     MovieAdapter movieadapter;
     @Override
@@ -32,13 +32,13 @@ public class MainPage extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { /* todo: Create a search activity mixed with search result */
-                Snackbar.make(view, "Search", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent search = new Intent(view.getContext(), View_Search.class);
+                startActivity(search);
             }
         });
 
         movieadapter = new MovieAdapter(this, R.layout.movie_item, new ArrayList<Movie>());
-        ((GridView)findViewById(R.id.movie_grid_popular)).setAdapter(movieadapter);
+        ((GridView)findViewById(R.id.movie_grid)).setAdapter(movieadapter);
 
         movieadapter.clear();
         if(HAS_FIRST_LOAD) {
@@ -48,10 +48,15 @@ public class MainPage extends AppCompatActivity {
             movieadapter.addAll(moviedb.getNextPopulars(this, movieadapter));
         }
 
-        ((GridView)findViewById(R.id.movie_grid_popular)).setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        ((GridView)findViewById(R.id.movie_grid)).setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) { /* Will be replaced with an intent switch */
-                Toast.makeText(MainPage.this, ((Movie)parent.getItemAtPosition(position)).getTitle(), Toast.LENGTH_SHORT).show();
+                Intent viewMovie = new Intent(parent.getContext(), View_Movie.class);
+
+                moviedb.toDisplay = ((Movie)parent.getItemAtPosition(position));
+
+                startActivity(viewMovie);
+//                Toast.makeText(View_MainPage.this, ((Movie)parent.getItemAtPosition(position)).getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -60,10 +65,9 @@ public class MainPage extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                moviedb.refreshPopulars(MainPage.this, movieadapter, ((SwipeRefreshLayout)findViewById(R.id.refresh_popular)));
+                moviedb.refreshPopulars(View_MainPage.this, movieadapter, ((SwipeRefreshLayout)findViewById(R.id.refresh_popular)));
             }
         });
-
     }
 
     @Override
@@ -89,18 +93,21 @@ public class MainPage extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-//        Toast.makeText(MainPage.this, getResources().getResourceEntryName(id) , Toast.LENGTH_SHORT).show();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_refresh_popular)
-            moviedb.refreshPopulars(MainPage.this, movieadapter, ((SwipeRefreshLayout)findViewById(R.id.refresh_popular)));
+//        Toast.makeText(View_MainPage.this, getResources().getResourceEntryName(id) , Toast.LENGTH_SHORT).show();
 
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_refresh_popular:
+                moviedb.refreshPopulars(View_MainPage.this, movieadapter, ((SwipeRefreshLayout) findViewById(R.id.refresh_popular)));
+                return true;
+            case R.id.action_search:
+                Intent search = new Intent(this, View_Search.class);
+                startActivity(search);
+                return true;
+            default:
+                return  super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+
     }
 }
+;
